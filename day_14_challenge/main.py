@@ -32,11 +32,17 @@ def compare_followers(a, b):
     
 # create a variable equal to a randomly generated entry from data list
   # assign random celebrities to variables A and B
+  
+# use an array for variables?
+# variables = [var_a, var_b]
+
+variables = ["new", "different"]
+
+different = [variables.remove("different")]
+print(different)
 
 var_a = generate_celeb()
 var_b = generate_dif(var_a)
-
-compare_followers(var_a, var_b)
 
 # print celebrities information: name, description, country
 
@@ -46,22 +52,30 @@ print(art.vs)
 
 print(f'Against B: {var_b["name"]}, a {var_b["description"]}, from {var_b["country"]}')
 
+# ask who has more followers and use input to compare followers
 
+answer = input("Who has more followers? Type 'A' or 'B': ").lower()
 
 # create a score counter keeping track of all correct answers
 
 total_score = 0
 
+# carry out comparison function
+compare_followers(var_a, var_b)
+
 
 # if guessed correctly
+#if comparison function returns 1
   # random varaible from previous game assigned as variable A against which new comparison made
   # counter goes up by 1
-  #clear()
+  # clear()
   # wining message
   # display current score
 
 
 # if guessed wrong
+#if comparison function returns 0
+  # clear()
   # losing message
   # print final score
 
