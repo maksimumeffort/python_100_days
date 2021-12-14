@@ -22,23 +22,31 @@ def generate_dif(celeb_a):
         return generate_celeb()
     else:
         return celeb
+
+# function that uses follower count to make comparison between A and B
+def compare_followers(a, b):
+    if a["follower_count"] > b["follower_count"]:
+        return 1
+    else:
+        return 0
     
 # create a variable equal to a randomly generated entry from data list
   # assign random celebrities to variables A and B
 
 var_a = generate_celeb()
+var_b = generate_dif(var_a)
+
+compare_followers(var_a, var_b)
+
+# print celebrities information: name, description, country
+
 print(f'Compare A: {var_a["name"]}, a {var_a["description"]}, from {var_a["country"]}')
 
 print(art.vs)
 
-var_b = generate_dif(var_a)
 print(f'Against B: {var_b["name"]}, a {var_b["description"]}, from {var_b["country"]}')
 
 
-
-  # print celebrities information: name, description, country
-  # generate follower count for A and B as separate variables
-  # function that uses follower count to make comparison between A and B 
 
 # create a score counter keeping track of all correct answers
 
