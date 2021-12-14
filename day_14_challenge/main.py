@@ -7,13 +7,13 @@ from random import randint
 # import game data
 from game_data import data
 
-# requires to compare the follower count between celebrity A and B
-
-# access celebrity information, assign to separate variables 
+# generate random celebrity
         
 def generate_celeb():
     rand_num = randint(0, len(data)-1)
     return data[rand_num]
+
+# both celebrities cannot be identical
 
 def generate_dif(celeb_a):
     rand_num = randint(0, len(data)-1)
@@ -27,11 +27,13 @@ def generate_dif(celeb_a):
   # assign random celebrities to variables A and B
 
 var_a = generate_celeb()
-print(var_a["name"])
-var_b = generate_dif(var_a)
-print(var_b["name"])
+print(f'Compare A: {var_a["name"]}, a {var_a["description"]}, from {var_a["country"]}')
 
-  # variable A and B cannot be the same
+print(art.vs)
+
+var_b = generate_dif(var_a)
+print(f'Against B: {var_b["name"]}, a {var_b["description"]}, from {var_b["country"]}')
+
 
 
   # print celebrities information: name, description, country
