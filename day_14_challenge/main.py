@@ -1,3 +1,5 @@
+
+
 # import the file containing art
 import art 
 # display art
@@ -40,11 +42,15 @@ def compare_followers(a, b):
 is_game_over = False  
 # use an array for variables?
 # variables = [var_a, var_b]
+
+# create a score counter keeping track of all correct answers
 total_score = 0
 
 while not is_game_over:
     if 'var_a' in locals():
         var_a = var_b
+        #clear()
+        print(f"You're right! Current score: {total_score}")
     else:
         var_a = generate_celeb()
     var_b = generate_dif(var_a)
@@ -62,6 +68,7 @@ while not is_game_over:
     answer = input("Who has more followers? Type 'A' or 'B': ").lower()
 
     # assign answer to the correct variable
+    # carry out comparison function
     if answer == "a":
         higher_lower = compare_followers(var_a, var_b)
     elif answer == "b":
@@ -75,25 +82,4 @@ while not is_game_over:
         
         
 
-    # create a score counter keeping track of all correct answers
-
-
-
-    # carry out comparison function
-
-
-    # if guessed correctly
-    #if comparison function returns 1
-      # random varaible from previous game assigned as variable A against which new comparison made
-      # counter goes up by 1
-      # clear()
-      # wining message
-      # display current score
-
-
-    # if guessed wrong
-    #if comparison function returns 0
-      # clear()
-      # losing message
-      # print final score
 
