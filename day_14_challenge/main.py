@@ -44,7 +44,7 @@ total_score = 0
 
 while not is_game_over:
     if 'var_a' in locals():
-        var_a = var_a
+        var_a = var_b
     else:
         var_a = generate_celeb()
     var_b = generate_dif(var_a)
