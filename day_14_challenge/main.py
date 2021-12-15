@@ -29,6 +29,11 @@ def compare_followers(a, b):
         return 1
     else:
         return 0
+
+# function that keeps one of the variables from previous comparisson
+
+#def keep_one():
+    
     
 # create a variable equal to a randomly generated entry from data list
   # assign random celebrities to variables A and B
@@ -38,7 +43,10 @@ is_game_over = False
 total_score = 0
 
 while not is_game_over:
-    var_a = generate_celeb()
+    if 'var_a' in locals():
+        var_a = var_a
+    else:
+        var_a = generate_celeb()
     var_b = generate_dif(var_a)
 
     # print celebrities information: name, description, country
