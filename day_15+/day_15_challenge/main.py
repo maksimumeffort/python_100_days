@@ -1,4 +1,6 @@
 # coffee machine app
+
+# Setup code
 MENU = {
     "espresso": {
         "ingredients": {
@@ -29,7 +31,14 @@ resources = {
     "water": [300, "ml"],
     "milk": [200, "ml"],
     "coffee": [100, "g"],
-    "money": ["$", 0]
+    "money": ["$", 0],
+}
+
+coins = {
+    "quarters": 0.25,
+    "dimes": 0.10,
+    "nickels": 0.05,
+    "pennies": 0.01,
 }
 
 # Functions
@@ -47,7 +56,7 @@ def print_report():
 def check_resources(req):
     """Takes req as a dictionary and checks against available resources"""
     for i in resources:
-        if req[i] > resources[i]:
+        if req[i] > resources[i][0]:
             return False
         else:
             return True
@@ -63,21 +72,57 @@ def make_coffee(coffee):
     if "milk" in MENU[coffee]["ingredients"]:
         resources["milk"][0] -= MENU[coffee]["ingredients"]["milk"]
 
-# coin operated: accepts penny:$0.01, nickel:$0.05, dime:$0.10, quarter:$0.25
-
-# TODO: 1. Prompt user by asking “ What would you like? (espresso/latte/cappuccino)
-choice = input("What would you like? (espresso/latte/cappuccino): ").lower()
-
-
-# TODO: 2a. Turn off the Coffee Machine by entering “ off ” to the prompt.
-machine_running = True
-if choice == "off":
-    machine_running = False
-
-
 # TODO: 4. Process coins.
 
+
+def process_coins():
+    total = 0
+    for n in coins:
+        amount = int(input(f"how many {n}?:"))
+        total += amount * coins[n]
+    return round(total, 2)
+
 # TODO: 5. Check transaction successful.
+
+
+def check_success(req):
+    given = process_coins()
+    if req == given:
+        return True
+    elif req < given:
+        print(f"Here is ${given - req} in change")
+        return True
+    else:
+        print("Sorry that's not enough money. Money refunded.")
+
+
+# TODO: 1. Prompt user by asking “ What would you like? (espresso/latte/cappuccino)
+machine_running = True
+
+while machine_running:
+    choice = input("What would you like? (espresso/latte/cappuccino): ").lower()
+
+    if choice in MENU:
+        if check_resources(MENU[choice]["ingredients"]):
+            if check_success(MENU[choice]["cost"]):
+                make_coffee(choice)
+        else:
+            print("Sorry there is not enough water")
+    elif choice == "report":
+        print_report()
+    # TODO: 2a. Turn off the Coffee Machine by entering “ off ” to the prompt.
+    elif choice == "off":
+        machine_running = False
+    else:
+        "Not an option"
+
+
+
+
+
+
+
+
 
 
 
