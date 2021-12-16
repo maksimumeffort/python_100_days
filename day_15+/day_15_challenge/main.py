@@ -114,7 +114,7 @@ while machine_running:
     elif choice == "off":
         machine_running = False
     else:
-        "Not an option"
+        print("Not an option")
 
 
 
