@@ -106,6 +106,7 @@ while machine_running:
         if check_resources(MENU[choice]["ingredients"]):
             if check_success(MENU[choice]["cost"]):
                 make_coffee(choice)
+                print(f"Here's your {choice}. Enjoy!")
         else:
             print("Sorry there is not enough water")
     elif choice == "report":
