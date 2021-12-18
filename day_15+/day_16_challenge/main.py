@@ -20,14 +20,13 @@ while machine_running:
     choice = input(f"What would you like? ({menu.get_items()}): ").lower()
 
     if choice in options:
-        for drink in options:
-            if drink == choice:
-                # TODO: 4. check transaction success
-                if coffee_machine.is_resource_sufficient(options[drink]):
-                    # TODO: 3. process coins
-                    if register.make_payment(options[drink].cost):
-                        # TODO: 5. make coffee
-                        coffee_machine.make_coffee(options[drink])
+        drink = menu.find_drink(choice)
+        # TODO: 4. check transaction success
+        if coffee_machine.is_resource_sufficient(drink):
+            # TODO: 3. process coins
+            if register.make_payment(drink.cost):
+                # TODO: 5. make coffee
+                coffee_machine.make_coffee(drink)
     elif choice == "report":
         # TODO: 1. print report
         coffee_machine.report()
