@@ -54,14 +54,15 @@ def draw_path():
 for i in range(300):
     draw_path()
 """
-for _ in range(100):
-    tim.color(random_color())
-    tim.circle(100)
-    current_heading = tim.heading()
-    current_heading += 10
-    tim.setheading(current_heading)
-    tim.circle(100)
-    print(tim.heading())
+
+
+def draw_spirograph(gap_size):
+    for _ in range(int(360/ gap_size)):
+        tim.color(random_color())
+        tim.circle(100)
+        tim.setheading(tim.heading() + gap_size)
+
+draw_spirograph(20)
 
 screen = Screen()
 screen.exitonclick()
