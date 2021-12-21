@@ -3,22 +3,30 @@ UP = 90
 DOWN = 270
 LEFT = 180
 RIGHT = 0
+STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 
 
 class Snake:
     def __init__(self):
         self.segments = []
         self.create_snake()
+        self.head = self.segments[0]
 
     def create_snake(self):
-        for i in range(3):
-            new_seg = Turtle(shape="square")
-            new_seg.color("white")
-            # new_seg.speed(1)
-            new_seg.penup()
-            pos_x = new_seg.xcor() - 20 * i
-            new_seg.setpos(x=pos_x, y=0)
-            self.segments.append(new_seg)
+        for position in STARTING_POSITIONS:
+            self.add_segment(position)
+
+    def add_segment(self, position):
+        new_seg = Turtle(shape="square")
+        new_seg.color("white")
+        # new_seg.speed(1)
+        new_seg.penup()
+        new_seg.setpos(position)
+        self.segments.append(new_seg)
+
+    def extend(self):
+        # add new segment to the snake
+        self.add_segment(self.segments[-1].position())
 
     def move(self, direction=""):
         # for body_num in range(start, stop, step):
@@ -26,22 +34,22 @@ class Snake:
             new_x = self.segments[s - 1].xcor()
             new_y = self.segments[s - 1].ycor()
             self.segments[s].goto(x=new_x, y=new_y)
-        self.segments[0].forward(20)
+        self.head.forward(20)
 
     # directions
     def up(self):
-        if self.segments[0].heading() != DOWN:
-            self.segments[0].seth(UP)
+        if self.head.heading() != DOWN:
+            self.head.seth(UP)
 
     def down(self):
-        if self.segments[0].heading() != UP:
-            self.segments[0].seth(DOWN)
+        if self.head.heading() != UP:
+            self.head.seth(DOWN)
 
     def left(self):
-        if self.segments[0].heading() != RIGHT:
-            self.segments[0].seth(LEFT)
+        if self.head.heading() != RIGHT:
+            self.head.seth(LEFT)
 
     def right(self):
-        if self.segments[0].heading() != LEFT:
-            self.segments[0].seth(RIGHT)
+        if self.head.heading() != LEFT:
+            self.head.seth(RIGHT)
 
