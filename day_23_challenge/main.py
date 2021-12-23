@@ -30,6 +30,10 @@ while game_is_on:
         if player.distance(car.xcor(), car.ycor()) < 25:
             game_is_on = False
 
+    # detect if player has reached top edge
+    if player.finished():
+        player.reset_position()
+
     screen.update()
     loop_num += 1
 

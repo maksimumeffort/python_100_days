@@ -15,3 +15,10 @@ class Player(Turtle):
     def up(self):
         new_pos = self.ycor() + 20
         self.goto(x=0, y=new_pos)
+
+    def finished(self):
+        if self.ycor() >= FINISH_LINE_Y:
+            return True
+
+    def reset_position(self):
+        self.goto(STARTING_POSITION)
