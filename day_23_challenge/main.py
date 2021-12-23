@@ -2,7 +2,7 @@ import time
 from turtle import Screen
 from player import Player
 from car_manager import CarManager
-# from scoreboard import Scoreboard
+from scoreboard import Scoreboard
 
 # Screen
 screen = Screen()
@@ -17,6 +17,9 @@ screen.onkey(fun=player.up, key="Up")
 # CarManager
 car_generator = CarManager()
 
+# ScoreBoard
+scoreboard = Scoreboard()
+
 loop_num = 0
 game_is_on = True
 while game_is_on:
@@ -29,11 +32,13 @@ while game_is_on:
     for car in car_generator.cars:
         if player.distance(car.xcor(), car.ycor()) < 25:
             game_is_on = False
+            scoreboard.game_over()
 
     # detect if player has reached top edge
     if player.finished():
         player.reset_position()
         car_generator.speed_up()
+        scoreboard.level_up()
 
     screen.update()
     loop_num += 1
