@@ -23,14 +23,14 @@ scoreboard = Scoreboard()
 loop_num = 0
 game_is_on = True
 while game_is_on:
-    time.sleep(0.1)
+    time.sleep(0.07)
     if loop_num % 6 == 0:
-        car_generator.generate_cars()
+        car_generator.generate_car()
     car_generator.move()
 
     # detect collision with cars
     for car in car_generator.cars:
-        if player.distance(car.xcor(), car.ycor()) < 25:
+        if car.distance(player) < 20:
             game_is_on = False
             scoreboard.game_over()
 
@@ -42,9 +42,5 @@ while game_is_on:
 
     screen.update()
     loop_num += 1
-
-# TODO 5: Create a scoreboard that keeps track of which level the user is on. Every time the turtle player does a
-#  successful crossing, the level should increase. When the turtle hits a car, GAME OVER should be displayed in the
-#  centre.
 
 screen.exitonclick()
