@@ -23,7 +23,7 @@ for n in names:
 
 # for each modified letter in the array create & write a new file in ReadyToSend
 for s in mod_strings:
-    with open(f"./Output/ReadyToSend/LetterTo{s}", mode="w") as send_letter:
+    with open(f"./Output/ReadyToSend/letter_to_{s}.txt", mode="w") as send_letter:
         send_letter.write(mod_strings[s])
 
 
