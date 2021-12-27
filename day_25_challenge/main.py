@@ -25,6 +25,13 @@ while len(correct_guesses) < 50:
     answer = screen.textinput(title=f"{len(correct_guesses)}/50 States Correct", prompt="What's another state name?").title()
     # TODO: 2.
     if answer == "Exit":
+        missing_states = [state for state in states_array if state not in correct_guesses]
+        """
+        or
+        # for state in states_array:
+        #     if state not in correct_guesses:
+        #         missing_states.append(state)
+        """
         break
     if answer in states_array:
         # TODO: 3.
@@ -35,12 +42,6 @@ while len(correct_guesses) < 50:
         map_turtle.write(arg=f"{answer}", move=False, align='center', font=('Arial', 8, 'normal'))
         # TODO: 5.
         correct_guesses.append(answer)
-
-missing_states = []
-
-for state in states_array:
-    if state not in correct_guesses:
-        missing_states.append(state)
 
 missing_states_dict = {
     "states": missing_states
