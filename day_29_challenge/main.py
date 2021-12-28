@@ -1,9 +1,29 @@
 from tkinter import *
+from tkinter import messagebox
+EMAIL = "alexmaksimets@gmail.com"
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
+
+def save():
+    website = website_input.get()
+    email = email_input.get()
+    password = password_input.get()
+
+    if len(website) < 1 or len(password) < 1:
+        messagebox.showinfo(title="Oops", message="Please don't leave any fields empty")
+    else:
+        is_ok = messagebox.askokcancel(title=website, message=f"Entered: \nEmail: {email}\n"
+                                                              f"Password: {password}\nIs it ok to save?")
+        if is_ok:
+            with open("data.txt", mode="a") as data_file:
+                data_file.write(f"{website} | {email} | {password}\n")
+            website_input.delete(0, END)
+            password_input.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
+
+
 screen = Tk()
 screen.title("Password Manager")
 screen.config(pady=50, padx=50)
@@ -22,20 +42,28 @@ for l in labels:
     l.grid(column=0, row=label_row_num)
     label_row_num += 1
 
+# variables
+website = StringVar()
+email = StringVar()
+password = StringVar()
+
 # inputs
-input_row_num = 1
-for l in labels[:2:]:
-    l = Entry(width=35)
-    l.grid(column=1, row=input_row_num, columnspan=2)
-    input_row_num += 1
-password_input = Entry(width=21)
-password_input.grid(column=1, row=input_row_num, columnspan=1)
+website_input = Entry(screen, width=35, textvariable=website)
+website_input.grid(column=1, row=1, columnspan=2)
+website_input.focus()
+
+email_input = Entry(screen, width=35, textvariable=email)
+email_input.grid(column=1, row=2, columnspan=2)
+email_input.insert(0, EMAIL)
+
+password_input = Entry(screen, width=21, textvariable=password)
+password_input.grid(column=1, row=3)
 
 # buttons
-generate_button = Button(width=10, text="Generate Password")
-generate_button.grid(column=2, row=3, columnspan=1)
+generate_button = Button(width=10, text="Generate Key")
+generate_button.grid(column=2, row=3)
 
-add_button = Button(width=33)
+add_button = Button(width=33, text="Add", command=save)
 add_button.grid(column=1, row=4, columnspan=2)
 
 screen.mainloop()
