@@ -1,8 +1,30 @@
 from tkinter import *
 from tkinter import messagebox
+from random import choice, randint, shuffle
+import pyperclip
 EMAIL = "alexmaksimets@gmail.com"
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
+
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+               'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    key_letters = [choice(letters) for _ in range(randint(8, 10))]
+
+    key_symbols = [choice(symbols) for _ in range(randint(2, 4))]
+
+    key_number = [choice(numbers) for _ in range(randint(2, 4))]
+
+    password_list = key_letters + key_symbols + key_number
+    shuffle(password_list)
+
+    password_input.delete(0, END)
+    password_input.insert(0, "".join(password_list))
+    pyperclip.copy("".join(password_list))
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -60,7 +82,7 @@ password_input = Entry(screen, width=21, textvariable=password)
 password_input.grid(column=1, row=3)
 
 # buttons
-generate_button = Button(width=10, text="Generate Key")
+generate_button = Button(width=10, text="Generate Key", command=generate_password)
 generate_button.grid(column=2, row=3)
 
 add_button = Button(width=33, text="Add", command=save)
