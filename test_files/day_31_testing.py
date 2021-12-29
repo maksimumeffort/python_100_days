@@ -21,5 +21,6 @@ data_dict = [{'French': 'vers', 'English': 'towards'},
         {'French': 'arrêter', 'English': 'Stop'},
         {'French': 'dirait', 'English': 'would say'}]
 
-
-print(data_dict.keys())
+word_pair = choice(data_dict)
+print(word_pair)
+data_dict.remove(word_pair) # works because it's a list

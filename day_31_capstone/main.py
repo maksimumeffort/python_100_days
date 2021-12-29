@@ -6,13 +6,17 @@ BACKGROUND_COLOR = "#B1DDC6"
 LANG_FONT = ("Ariel", 40, "italic")
 WORD_FONT = ("Ariel", 60, "bold")
 word_pair = {}
-known_words = []
 # ------------------------DATA_MANAGER------------------------- #
 
-with open("data/french_words.csv") as data_file:
-    data = pandas.read_csv(data_file)
-    data_dict = data.to_dict(orient="records")
-    # print(data_dict)
+try:
+    with open("data/words_to_learn.csv") as data_file:
+        data = pandas.read_csv(data_file)
+        data_dict = data.to_dict(orient="records")
+except FileNotFoundError:
+    with open("data/french_words.csv") as data_file:
+        original_data = pandas.read_csv(data_file)
+        data_dict = original_data.to_dict(orient="records")
+
 
 # --------------------------FUNCTIONS-------------------------- #
 
@@ -35,14 +39,16 @@ def generate_word():
 
 
 def know():
-    global word_pair, data_dict
-    if word_pair in data_dict:
-        del data_dict[word_pair]
-        print("deleted")
+    # find out how .remove() works
+    data_dict.remove(word_pair)
+    words_df = pandas.DataFrame(data_dict)
+    words_df.to_csv("data/words_to_learn.csv", index=False, mode="w")
+    generate_word()
+
 
 def not_know():
-    pass
-    # generate_word()
+    generate_word()
+
 # ----------------------------GUI------------------------------ #
 
 
