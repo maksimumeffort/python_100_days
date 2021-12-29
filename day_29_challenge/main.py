@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+import json
 EMAIL = "alexmaksimets@gmail.com"
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -29,18 +30,22 @@ def generate_password():
 
 
 def save():
-    website = website_input.get()
-    email = email_input.get()
-    password = password_input.get()
-
-    if len(website) < 1 or len(password) < 1:
+    new_data = {
+        website.get(): {
+            "email": email.get(),
+            "password": password.get()
+        }
+    }
+    if len(website_input.get()) < 1 or len(password_input.get()) < 1:
         messagebox.showinfo(title="Oops", message="Please don't leave any fields empty")
     else:
-        is_ok = messagebox.askokcancel(title=website, message=f"Entered: \nEmail: {email}\n"
-                                                              f"Password: {password}\nIs it ok to save?")
-        if is_ok:
-            with open("data.txt", mode="a") as data_file:
-                data_file.write(f"{website} | {email} | {password}\n")
+
+        with open("data.json", mode="r") as data_file:
+            data = json.load(data_file)  # read old data #
+            data.update(new_data)  # update old data with new data #
+
+        with open("data.json", mode="w") as data_file:
+            json.dump(data, data_file, indent=4)  # overwrite old data #
             website_input.delete(0, END)
             password_input.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
@@ -59,9 +64,9 @@ logo_canvas.grid(row=0, column=1)
 
 # labels
 label_row_num = 1
-for l in labels:
-    l = Label(text=f"{l}")
-    l.grid(column=0, row=label_row_num)
+for n in labels:
+    n = Label(text=f"{n}")
+    n.grid(column=0, row=label_row_num)
     label_row_num += 1
 
 # variables
