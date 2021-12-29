@@ -39,15 +39,35 @@ def save():
     if len(website_input.get()) < 1 or len(password_input.get()) < 1:
         messagebox.showinfo(title="Oops", message="Please don't leave any fields empty")
     else:
-
-        with open("data.json", mode="r") as data_file:
-            data = json.load(data_file)  # read old data #
-            data.update(new_data)  # update old data with new data #
-
-        with open("data.json", mode="w") as data_file:
-            json.dump(data, data_file, indent=4)  # overwrite old data #
+        try:
+            with open("data.json", mode="r") as data_file:
+                data = json.load(data_file)  # read old data #
+        except FileNotFoundError:
+            with open("data.json", mode="w") as data_file:
+                json.dump(new_data, data_file, indent=4)  # overwrite old data #
+        else:
+            with open("data.json", mode="w") as data_file:
+                data.update(new_data)  # update old data with new data #
+                json.dump(data, data_file, indent=4)  # overwrite old data #
+        finally:
             website_input.delete(0, END)
             password_input.delete(0, END)
+# ---------------------------- FIND PASSWORD ------------------------------- #
+
+
+def find_password():
+    try:
+        with open("data.json", mode="r") as data_file:
+            data = json.load(data_file)  # read old data #
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found")
+    else:
+        entry = website_input.get()
+        if entry in data:
+            text = f"Email: {data[entry]['email']}\nPassword: {data[entry]['password']}"
+            messagebox.showinfo(title=f"{website_input.get()}", message=text)
+        else:
+            messagebox.showinfo(title="Error", message="Entry not found")
 # ---------------------------- UI SETUP ------------------------------- #
 
 
@@ -75,8 +95,8 @@ email = StringVar()
 password = StringVar()
 
 # inputs
-website_input = Entry(screen, width=35, textvariable=website)
-website_input.grid(column=1, row=1, columnspan=2)
+website_input = Entry(screen, width=21, textvariable=website)
+website_input.grid(column=1, row=1)
 website_input.focus()
 
 email_input = Entry(screen, width=35, textvariable=email)
@@ -87,6 +107,9 @@ password_input = Entry(screen, width=21, textvariable=password)
 password_input.grid(column=1, row=3)
 
 # buttons
+search_button = Button(width=10, text="Search", command=find_password)
+search_button.grid(column=2, row=1)
+
 generate_button = Button(width=10, text="Generate Key", command=generate_password)
 generate_button.grid(column=2, row=3)
 
