@@ -3,7 +3,6 @@ from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
 import json
-EMAIL = "alexmaksimets@gmail.com"
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 
@@ -15,9 +14,7 @@ def generate_password():
     symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
     key_letters = [choice(letters) for _ in range(randint(8, 10))]
-
     key_symbols = [choice(symbols) for _ in range(randint(2, 4))]
-
     key_number = [choice(numbers) for _ in range(randint(2, 4))]
 
     password_list = key_letters + key_symbols + key_number
@@ -46,8 +43,8 @@ def save():
             with open("data.json", mode="w") as data_file:
                 json.dump(new_data, data_file, indent=4)  # overwrite old data #
         else:
+            data.update(new_data) # update old data with new data #
             with open("data.json", mode="w") as data_file:
-                data.update(new_data)  # update old data with new data #
                 json.dump(data, data_file, indent=4)  # overwrite old data #
         finally:
             website_input.delete(0, END)
@@ -75,6 +72,7 @@ screen = Tk()
 screen.title("Password Manager")
 screen.config(pady=50, padx=50)
 labels = ["Website:", "Email/Username:", "Password:"]
+EMAIL = "alexmaksimets@gmail.com"
 
 # canvas
 logo_canvas = Canvas(width=200, height=200)

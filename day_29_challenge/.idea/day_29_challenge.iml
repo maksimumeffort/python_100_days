@@ -6,5 +6,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (day_29_challenge)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Solution+-+password-manager-end" />
+    <orderEntry type="module" module-name="Solution+-+password-manager-improved-end" />
   </component>
 </module>

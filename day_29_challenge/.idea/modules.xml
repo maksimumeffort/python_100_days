@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../test_files/Solution+-+password-manager-end/.idea/Solution+-+password-manager-end.iml" filepath="$PROJECT_DIR$/../test_files/Solution+-+password-manager-end/.idea/Solution+-+password-manager-end.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../test_files/Solution+-+password-manager-improved-end/.idea/Solution+-+password-manager-improved-end.iml" filepath="$PROJECT_DIR$/../test_files/Solution+-+password-manager-improved-end/.idea/Solution+-+password-manager-improved-end.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/day_29_challenge.iml" filepath="$PROJECT_DIR$/.idea/day_29_challenge.iml" />
     </modules>
   </component>
