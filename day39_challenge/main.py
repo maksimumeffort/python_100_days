@@ -11,6 +11,7 @@ tomorrow = datetime.today() + timedelta(days=1)
 in_6_months = tomorrow + timedelta(days=180)
 
 sheet_data = list(data_manager.get_price_data())
+users_data = list(data_manager.get_users_data())
 st_date = tomorrow.strftime("%d/%m/%Y")
 end_date = in_6_months.strftime("%d/%m/%Y")
 LOCATION = "LON"
@@ -26,14 +27,21 @@ for entry in sheet_data:
         continue
 
     if flight.price < entry["lowestPrice"]:
-        message = f"Low price alert! Only £{flight.price} to fly from {flight.origin_city}-{flight.origin_airport} "
-        f"to {flight.destination_city}-{flight.destination_airport}, from {flight.out_date} to {flight.return_date}."
+        message = f'''
+            Low price alert! Only u'\xa3'{flight.price} to fly from {flight.origin_city}-{flight.origin_airport}
+            to {flight.destination_city}-{flight.destination_airport}, from {flight.out_date} to {flight.return_date}.
+        '''
 
         if flight.stop_overs > 0:
             message += f"\nFlight has {flight.stop_overs} stop over, via {flight.via_city}."
             # print(message)
 
-    # notification_manager.send_notification(text=message)
-    # notification_manager.send_emails(emails_data)
+        message += f'''Book: 
+                https://www.google.co.uk/flights?hl=en#flt={flight.origin_airport}.{flight.destination_airport}.
+                {flight.out_date}*{flight.destination_airport}.{flight.origin_airport}.{flight.return_date}
+        '''
 
-print(list(data_manager.get_users_data()))
+    # notification_manager.send_notification(text=message)
+        notification_manager.send_emails(users_data, text=message.encode("utf-8"))
+
+
