@@ -1,18 +1,38 @@
-body {
-    background-color: lightGrey;
-    }
-hr {
-    border-style: none;
-    border-top: 5px dotted white;
-    width: 10%;
+body{
+    margin: 0px;
+    text-align: center;
+    font-family: verdana, sans-serif;
 }
-h1, h2, h3 {
-    color: grey;
+
+h1{
+    margin: 0px;
+    color: white;
 }
-img:hover{
-    opacity: 0.5;
+
+p {
+    margin: 0px;
+}
+
+
+.top-container{
+    background-color: lightBlue;
+    width: 100%;
+    padding-top: 100px;
+    position: relative;
 }
 
 .rounded {
     border-radius: 20%;
+}
+
+.top-cloud {
+   position: absolute;
+    right: 300px;
+    top: 50px;
+}
+
+.bot-cloud {
+    position: absolute;
+    left: 300px;
+    bottom: 300px;
 }
