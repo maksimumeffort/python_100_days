@@ -1,0 +1,18 @@
+body {
+    background-color: lightGrey;
+    }
+hr {
+    border-style: none;
+    border-top: 5px dotted white;
+    width: 10%;
+}
+h1, h2, h3 {
+    color: grey;
+}
+img:hover{
+    opacity: 0.5;
+}
+
+.rounded {
+    border-radius: 20%;
+}
