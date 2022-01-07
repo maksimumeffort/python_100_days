@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 
 # ----------------------SCRAPER------------------------ #
 
-# date = input("Which year do you want to travel to? Type the date in this format YYYY-MM-DD: ")
+date = input("Which year do you want to travel to? Type the date in this format YYYY-MM-DD: ")
 
-response = requests.get(f"https://www.billboard.com/charts/hot-100/1993-02-22")
+response = requests.get(f"https://www.billboard.com/charts/hot-100/{date}")
 billboard_data = response.text
 
 soup = BeautifulSoup(billboard_data, "html.parser")
@@ -22,7 +22,7 @@ songs_singers = [[song_list[i], singer_list[i]] for i in range(len(song_list))]
 
 # ----------------------SPOTIFY------------------------ #
 
-scope = "user-top-read"
+scope = "playlist-modify-public playlist-modify-private user-top-read"
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
@@ -30,8 +30,6 @@ user = sp.current_user()
 user_id = user["id"]
 
 uri_list = []
-
-sp.user_playlist_create(user_id, "hello")
 
 # populating uri_list with song uri for each value in scraped list
 for s in songs_singers:
@@ -43,8 +41,17 @@ for s in songs_singers:
     else:
         uri_list.append(song_uri)
 
-# playlist = sp.user_playlist_create(user_id, name=f"{date} Billboard 100")
+# delete all playlists
+playlists = sp.user_playlists(user_id)
+if len(playlists) > 0:
+    for playlist in playlists["items"]:
+        sp.current_user_unfollow_playlist(playlist_id=playlist["id"])
 
+print("Finished deleting unwanted playlists")
+
+new_playlist = sp.user_playlist_create(user_id, name=f"{date} Billboard 100")
+
+sp.playlist_add_items(new_playlist["id"], items=uri_list)
 
 
 
