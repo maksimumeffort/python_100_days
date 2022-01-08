@@ -33,6 +33,7 @@ driver.get(url)
 # driver.quit()
 cookie = driver.find_element(By.ID, "cookie")
 timeout = time.time() + 5
+five_min = time.time() + 5*60
 
 options = driver.find_elements(By.CSS_SELECTOR, "#store div")
 option_ids = [item.get_attribute("id") for item in options]
@@ -43,13 +44,13 @@ while True:
 
     # every 5 seconds execute
     if time.time() > timeout:
-        print("initiate process")
+        # print("initiate process")
 
         # get prices
         # options_list = [item.find_element(By.CSS_SELECTOR, "b").text.split(" - ") for item in options[:8]]
         # option_prices = [int("".join(item[1].split(","))) for item in options_list]
 
-        print("getting list of upgrades")
+        # print("getting list of upgrades")
         # Get all upgrade <b> tags
         all_prices = driver.find_elements(By.CSS_SELECTOR, "#store b")
         option_prices = []
@@ -64,9 +65,9 @@ while True:
         # dictionary of option prices and option ids
         upgrades = {option_prices[n]: option_ids[n] for n in range(len(option_prices))}
 
-        print("upgrades list created")
+        # print("upgrades list created")
 
-        print("counting money")
+        # print("counting money")
 
         # finding money value
         money = driver.find_element(By.ID, "money").text
@@ -74,20 +75,20 @@ while True:
             money = money.replace(",", "")
         cookie_count = int(money)
 
-        print(f"You have {cookie_count}")
+        # print(f"You have {cookie_count}")
 
-        print(f"checking upgrade options")
+        # print(f"checking upgrade options")
 
         # finding options available
         opts_available = {}
 
-        print(f"{opts_available}")
+        # print(f"{opts_available}")
 
         for cost, id in upgrades.items():
             if cookie_count > cost:
                 opts_available[cost] = id
 
-        print(f"You have {len(opts_available)} options")
+        # print(f"You have {len(opts_available)} options")
 
         # opts_available = []
         # for i in range(len(option_prices)):
@@ -102,14 +103,17 @@ while True:
         most_exp_opt = max(opts_available)
         most_exp_id = opts_available[most_exp_opt]
 
-        print(f"Most expensive: {most_exp_id}")
+        # print(f"Most expensive: {most_exp_id}")
 
         choice = driver.find_element(By.ID, most_exp_id)
         choice.click()
 
         # add 5 seconds to timer
         timeout = time.time() + 5
-        print("time")
+        # print("time")
 
-
-
+    #After 5 minutes stop the bot and check the cookies per second count.
+    if time.time() > five_min:
+        cookie_per_s = driver.find_element(By.ID, "cps").text
+        print(cookie_per_s)
+        break
