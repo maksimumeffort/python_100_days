@@ -95,10 +95,13 @@ apply_btn = driver.find_element(By.CSS_SELECTOR, ".jobs-apply-button--top-card b
 # application process
 apply_btn.click()
 time.sleep(2)
+
 # find the phone input field and give phone value
 phone_input = driver.find_element(By.TAG_NAME, "input")
 phone_input.send_keys(PHONE)
+
 # click submit
-# buttons = driver.find_elements(By.)
+submit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/div/form/footer/div[3]/button")
+submit_button.click()
 
 # driver.quit()
