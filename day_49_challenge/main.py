@@ -12,15 +12,13 @@ EMAIL = "maksdevil@hotmail.co.uk"
 PASS = "Throwaway2021@"
 PHONE = "459840931"
 
-URL = "https://www.linkedin.com/jobs/search/?geoId=104001115&keywords=python%20developer&location=Brisbane%20City%2C%20QL"
+URL = "https://www.linkedin.com/jobs/search/?currentJobId=2866113243&geoId=104001115&keywords=python%20developer&location=Brisbane%20City%2C%20QL"
 
 driver.get(URL)
 
 # login
 sign_in = driver.find_element(By.CSS_SELECTOR, "div.nav__cta-container a.nav__button-secondary")
 sign_in.click()
-
-time.sleep(3)
 
 user = driver.find_element(By.ID, "username")
 password = driver.find_element(By.ID, "password")
@@ -71,7 +69,7 @@ for item in item_list:
     item.click()
     item_desc = driver.find_element(By.CSS_SELECTOR, "div.jobs-unified-top-card__content--two-pane")
     # need to sleep so that "apply" element loads
-    time.sleep(3)
+    time.sleep(1)
     # item_title = item_desc.find_element(By.TAG_NAME, "h2").text
     item_spans = item_desc.find_elements(By.TAG_NAME, 'span')
     span_text_list = []
@@ -79,29 +77,43 @@ for item in item_list:
     for span in item_spans:
         if "Apply" in span.text:
             span_text_list.append(span.text)
+        # makes sure applied jobs showing up in the list to not mess up the index of apply modes
+        elif "Applied" in span.text:
+            span_text_list.append("Applied")
     apply_modes.append(span_text_list)
-    print("apply mode added")
+    # print("apply mode added")
 
 # find index of first list item with apply_mode = "Easy Apply"
 # flatten the apply_modes list
 mode_list_flat = [item for sub_list in apply_modes for item in sub_list]
+# print(mode_list_flat)
 
-# find the first value in item_list with value "Easy Apply"
-first_easy_app = item_list[mode_list_flat.index('Easy Apply')]
+# # find the first value in item_list with value "Easy Apply"
+needed_index = mode_list_flat.index('Easy Apply')
+if "Applied" in mode_list_flat:
+    needed_index += 1
+first_easy_app = item_list[needed_index]
 first_easy_app.click()
 print("found first easy app")
 apply_btn = driver.find_element(By.CSS_SELECTOR, ".jobs-apply-button--top-card button")
 
-# application process
+# # application process
 apply_btn.click()
 time.sleep(2)
+#
+# # find the phone input field and give phone value
+# phone_input = driver.find_element(By.TAG_NAME, "input")
+# phone_input.send_keys(PHONE)
+#
+# # click submit
+# submit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/div/form/footer/div[3]/button")
+# submit_button.click()
 
-# find the phone input field and give phone value
-phone_input = driver.find_element(By.TAG_NAME, "input")
-phone_input.send_keys(PHONE)
-
-# click submit
-submit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/div/form/footer/div[3]/button")
-submit_button.click()
+# click exit
+# exit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/button")
+# exit_button.click()
+# discard_button = driver.find_element(By.XPATH, "/html/body/div[3]/div[2]/div/div[3]/button[1]")
+# discard_button.click()
 
 # driver.quit()
+
