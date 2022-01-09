@@ -76,7 +76,7 @@ def find_application_mode(item):
     if len(span_text_list) != 1:
         span_text_list.pop()
     apply_modes.append(span_text_list)
-    print(f"{span_text_list} added")
+    # print(f"{span_text_list} added")
 
 
 time.sleep(10)
@@ -91,47 +91,41 @@ for result in search_results:
 # find index of first list item with apply_mode = "Easy Apply"
 # flatten the apply_modes list
 mode_list_flat = [item for sub_list in apply_modes for item in sub_list]
-print(len(mode_list_flat))
-print(mode_list_flat)
 
 # # find the first value in item_list with value "Easy Apply"
-easy_apply_indices = []
-for n in range(len(mode_list_flat)):
-    if mode_list_flat[n] == "Easy Apply":
-        easy_apply_indices.append(n)
+easy_apply_indices = [n for n in range(len(mode_list_flat)) if mode_list_flat[n] == "Easy Apply"]
+# print(easy_apply_indices)
+# print(mode_list_flat.index('Applied'))
+for index in easy_apply_indices:
+    search_results[index].click()
 
-print(easy_apply_indices)
-print(mode_list_flat.index('Applied'))
-first_easy_app = search_results[easy_apply_indices[0]]
-first_easy_app.click()
+    # # application process
+    apply_btn = driver.find_element(By.CSS_SELECTOR, ".jobs-apply-button--top-card button")
+    apply_btn.click()
+    time.sleep(2)
+
+    # find the phone input field and give phone value
+    phone_input = driver.find_element(By.TAG_NAME, "input")
+    phone_input.send_keys(PHONE)
+
+    # # click submit
+    # submit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/div/form/footer/div[3]/button")
+    # submit_button.click()
+
+    # click exit
+    exit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/button")
+    exit_button.click()
+    discard_button = driver.find_element(By.XPATH, "/html/body/div[3]/div[2]/div/div[3]/button[1]")
+    discard_button.click()
+
 
 
 # needed_index = mode_list_flat.index('Easy Apply')
-# for mode in mode_list_flat:
-#     if mode == "Applied":
-#         needed_index += 1
 # first_easy_app = search_results[needed_index]
 # first_easy_app.click()
 # print("found first easy app")
-# apply_btn = driver.find_element(By.CSS_SELECTOR, ".jobs-apply-button--top-card button")
 #
-# # # application process
-# apply_btn.click()
-# time.sleep(2)
 #
-# # find the phone input field and give phone value
-# phone_input = driver.find_element(By.TAG_NAME, "input")
-# phone_input.send_keys(PHONE)
-#
-# # click submit
-# submit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/div[2]/div/form/footer/div[3]/button")
-# submit_button.click()
 
-# click exit
-# exit_button = driver.find_element(By.XPATH, "/html/body/div[3]/div/div/button")
-# exit_button.click()
-# discard_button = driver.find_element(By.XPATH, "/html/body/div[3]/div[2]/div/div[3]/button[1]")
-# discard_button.click()
-
-# driver.quit()
+driver.quit()
 
