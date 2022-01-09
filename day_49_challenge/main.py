@@ -66,13 +66,18 @@ item_list = driver.find_elements(By.CLASS_NAME, "jobs-search-results__list-item"
 
 text_list = []
 for item in item_list:
-    time.sleep(2)
     item.click()
     item_desc = driver.find_element(By.CSS_SELECTOR, "div.jobs-unified-top-card__content--two-pane")
     print("found description")
-    item_title = item_desc.find_element(By.TAG_NAME, "h2").text
-    text_list.append(item_title)
+    time.sleep(3)
+    # item_title = item_desc.find_element(By.TAG_NAME, "h2").text
+    item_spans = item_desc.find_elements(By.TAG_NAME, 'span')
+    span_text_list = []
+    for span in item_spans:
+        if "Apply" in span.text:
+            span_text_list.append(span.text)
+
+    text_list.append(span_text_list)
 # apply_btn = driver.find_element(By.CSS_SELECTOR, ".jobs-apply-button--top-card button span")
 print(text_list)
 driver.quit()
-
