@@ -25,11 +25,8 @@ password = driver.find_element(By.ID, "password")
 submit = driver.find_element(By.CLASS_NAME, "btn__primary--large")
 
 user.send_keys(EMAIL)
-
 password.send_keys(PASS)
-
 submit.click()
-
 # OPTION 1: run through the list of job ads and find the first one that has easy apply
 
 # search_results_list = driver.find_element(By.CSS_SELECTOR, "ul.jobs-search-results__list")
@@ -59,13 +56,9 @@ submit.click()
 # print(btns_text_list)
 
 ## OPTION 2: click through the list, check if text == "easy apply", if not move to next item in list
-time.sleep(10)
 
-item_list = driver.find_elements(By.CLASS_NAME, "jobs-search-results__list-item")
-
-# get a list of appy modes
-apply_modes = []
-for item in item_list:
+# find_application_mode function
+def find_application_mode(item):
     item.click()
     item_desc = driver.find_element(By.CSS_SELECTOR, "div.jobs-unified-top-card__content--two-pane")
     # need to sleep so that "apply" element loads
@@ -78,28 +71,53 @@ for item in item_list:
         if "Apply" in span.text:
             span_text_list.append(span.text)
         # makes sure applied jobs showing up in the list to not mess up the index of apply modes
-        elif "Applied" in span.text:
+        elif f"Applied" in span.text:
             span_text_list.append("Applied")
+    if len(span_text_list) != 1:
+        span_text_list.pop()
     apply_modes.append(span_text_list)
+    print(f"{span_text_list} added")
+
+
+time.sleep(10)
+
+# get a list of application modes
+search_results = driver.find_elements(By.CLASS_NAME, "jobs-search-results__list-item")
+apply_modes = []
+for result in search_results:
+    find_application_mode(result)
     # print("apply mode added")
 
 # find index of first list item with apply_mode = "Easy Apply"
 # flatten the apply_modes list
 mode_list_flat = [item for sub_list in apply_modes for item in sub_list]
-# print(mode_list_flat)
+print(len(mode_list_flat))
+print(mode_list_flat)
 
 # # find the first value in item_list with value "Easy Apply"
-needed_index = mode_list_flat.index('Easy Apply')
-if "Applied" in mode_list_flat:
-    needed_index += 1
-first_easy_app = item_list[needed_index]
-first_easy_app.click()
-print("found first easy app")
-apply_btn = driver.find_element(By.CSS_SELECTOR, ".jobs-apply-button--top-card button")
+easy_apply_indices = []
+for n in range(len(mode_list_flat)):
+    if mode_list_flat[n] == "Easy Apply":
+        easy_apply_indices.append(n)
 
-# # application process
-apply_btn.click()
-time.sleep(2)
+print(easy_apply_indices)
+print(mode_list_flat.index('Applied'))
+first_easy_app = search_results[easy_apply_indices[0]]
+first_easy_app.click()
+
+
+# needed_index = mode_list_flat.index('Easy Apply')
+# for mode in mode_list_flat:
+#     if mode == "Applied":
+#         needed_index += 1
+# first_easy_app = search_results[needed_index]
+# first_easy_app.click()
+# print("found first easy app")
+# apply_btn = driver.find_element(By.CSS_SELECTOR, ".jobs-apply-button--top-card button")
+#
+# # # application process
+# apply_btn.click()
+# time.sleep(2)
 #
 # # find the phone input field and give phone value
 # phone_input = driver.find_element(By.TAG_NAME, "input")
