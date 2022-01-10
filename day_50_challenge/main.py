@@ -18,8 +18,14 @@ def delay():
 
 
 def swipe_right(x):
-    x.click()
-    delay()
+    try:
+        x.click()
+    except ElementClickInterceptedException:
+        print("intercepted")
+    except NoSuchElementException:
+        print("no element")
+    else:
+        delay()
 
 chrome_options = Options()
 chrome_options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15')
@@ -56,9 +62,9 @@ username = driver.find_element(By.NAME, "email")
 password = driver.find_element(By.NAME, "pass")
 fb_login = driver.find_element(By.NAME, "login")
 username.send_keys(EMAIL)
-delay()
+# delay()
 password.send_keys(PASS)
-delay()
+# delay()
 fb_login.click()
 delay()
 
@@ -80,16 +86,15 @@ accept_btn.click()
 delay()
 
 # swipe left/swipe right
-btns = driver.find_elements(By.TAG_NAME, "button")
-main_btns = [btn for btn in btns[17::]]
-# for i in range(len(main_btns)):
-#     print(i)
+def find_buttons(driver):
+    btns = driver.find_elements(By.TAG_NAME, "button")
+    print(len(btns))
+    main_btns = [btn for btn in btns[-5:]]
+    print(main_btns[0])
+    return main_btns[0]
 
 while counter > 0:
-    try:
-        swipe_right(main_btns[0])
-    except ElementClickInterceptedException:
-        break
+    swipe_right(find_buttons(driver))
     print(counter)
     counter -= 1
 
