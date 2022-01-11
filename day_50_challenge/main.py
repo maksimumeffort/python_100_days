@@ -1,7 +1,8 @@
 from selenium import webdriver
 import os
 
-from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
+from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, \
+    ElementNotInteractableException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -18,13 +19,7 @@ def delay():
 
 
 def swipe_right(x):
-    try:
         x.click()
-    except ElementClickInterceptedException:
-        print("intercepted")
-    except NoSuchElementException:
-        print("no element")
-    else:
         delay()
 
 chrome_options = Options()
@@ -90,11 +85,22 @@ def find_buttons(driver):
     btns = driver.find_elements(By.TAG_NAME, "button")
     print(len(btns))
     main_btns = [btn for btn in btns[-5:]]
-    print(main_btns[0])
-    return main_btns[0]
+    if len(btns) == 22:
+        return main_btns[1]
+    # print(main_btns[2])
+    return main_btns[2]
 
 while counter > 0:
-    swipe_right(find_buttons(driver))
-    print(counter)
-    counter -= 1
+    try:
+        swipe_right(find_buttons(driver))
+    except ElementNotInteractableException:
+        exit_match = driver.find_element(By.CSS_SELECTOR, "[title*='Back to Tinder']")
+        exit_match.click()
+    except ElementClickInterceptedException:
+        print("modal detected")
+    else:
+        print(counter)
+        counter -= 1
+
+driver.quit()
 
