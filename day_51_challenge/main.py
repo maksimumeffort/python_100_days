@@ -74,22 +74,11 @@ class InternetSpeedTwitterBot:
             # write a tweet
             time.sleep(4)
             self.generate_message()
-            text_field = self.driver.find_element(By.CSS_SELECTOR,
-                                                  "div.public-DraftStyleDefault-block public-DraftStyleDefault-ltr")
+            text_field = self.driver.find_element(By.CSS_SELECTOR, "div[aria-label*='Tweet text']")
             text_field.send_keys(self.message)
-            # 3/3 verification
-            password_input = self.driver.find_elements(By.TAG_NAME, "input")[-1]
-            password_input.send_keys(TWITTER_PASS)
-            time.sleep(2)
-            login = self.driver.find_element(By.CSS_SELECTOR, "div[data-testid*='LoginForm_Login_Button']")
-            # print(login)
-            login.click()
-            # write a tweet
-            time.sleep(4)
-            self.generate_message()
-            text_field = self.driver.find_element(By.CSS_SELECTOR,
-                                                  "div.public-DraftStyleDefault-block public-DraftStyleDefault-ltr")
-            text_field.send_keys(self.message)
+            tweet = self.driver.find_element(By.CSS_SELECTOR, "div[data-testid*='tweetButtonInline']")
+            tweet.click()
+
         else:
             submit = self.driver.find_elements(By.CSS_SELECTOR, "div[role*='button']")[-1]
             submit.click()
@@ -97,5 +86,6 @@ class InternetSpeedTwitterBot:
 
 
 tracker = InternetSpeedTwitterBot()
-# tracker.get_internet_speed()
-tracker.tweet_at_provider()
+tracker.get_internet_speed()
+if tracker.up < PROMISED_UP or tracker.down < PROMISED_DOWN:
+    tracker.tweet_at_provider()
