@@ -2,7 +2,7 @@ from selenium import webdriver
 import os
 
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, \
-    ElementNotInteractableException
+    ElementNotInteractableException, InvalidSelectorException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -82,23 +82,32 @@ delay()
 
 # swipe left/swipe right
 def find_buttons(driver):
-    btns = driver.find_elements(By.TAG_NAME, "button")
-    print(len(btns))
-    main_btns = [btn for btn in btns[-5:]]
-    if len(btns) == 22:
-        return main_btns[1]
-    # print(main_btns[2])
-    return main_btns[2]
+    try:
+        btns = driver.find_elements(By.TAG_NAME, "button")
+        print("found buttons")
+    except InvalidSelectorException:
+        print("modal detected?")
+        buttons = driver.find_elements(By.CSS_SELECTOR, "[role*='dialog' button]")
+        print("modal detected")
+        print(buttons)
+    else:
+        print(len(btns))
+        main_btns = [btn for btn in btns[-5:]]
+        # if len(btns) == 22:
+        #     return main_btns[1]
+        # print(main_btns[2])
+        return main_btns[2]
 
 while counter > 0:
     try:
-        swipe_right(find_buttons(driver))
-    except ElementNotInteractableException:
-        exit_match = driver.find_element(By.CSS_SELECTOR, "[title*='Back to Tinder']")
-        exit_match.click()
-    except ElementClickInterceptedException:
-        print("modal detected")
+        like_btn = find_buttons(driver)
+    except ElementNotInteractableException or ElementClickInterceptedException:
+            print("checking if matched")
+            exit_match = driver.find_element(By.CSS_SELECTOR, "[title*='Back to Tinder']")
+            exit_match.click()
     else:
+        swipe_right(like_btn)
+        print("liked")
         print(counter)
         counter -= 1
 
