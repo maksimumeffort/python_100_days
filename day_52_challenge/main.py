@@ -15,6 +15,7 @@ S = Service(DRIVER_PATH)
 class InstaFollower:
     def __init__(self):
         self.driver = webdriver.Chrome(service=S)
+        self.scroll = 1
 
     def login(self):
         self.driver.get(INSTA_URL)
@@ -31,17 +32,31 @@ class InstaFollower:
         login_btn.click()
 
     def find_followers(self):
-        time.sleep(3)
+        time.sleep(5)
         search_bar = self.driver.find_element(By.TAG_NAME, 'input')
         search_bar.send_keys(SIMILAR_ACCOUNT)
         time.sleep(2)
         results_menu = self.driver.find_element(By.CSS_SELECTOR, "div.uo5MA")
         first_res = results_menu.find_elements(By.TAG_NAME, 'a')[0]
         first_res.click()
-
+        time.sleep(2)
+        followers_tab = self.driver.find_element(By.CSS_SELECTOR, 'a[href="/memes/followers/"]')
+        followers_tab.click()
 
     def follow(self):
-        pass
+        time.sleep(2)
+        pop_up = self.driver.find_element(By.CSS_SELECTOR, "div[role='dialog'] div.isgrP")
+        print(pop_up)
+        while self.scroll == 1:
+            self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", pop_up)
+        # follow_btns = pop_up.find_elements(By.TAG_NAME, "li button")
+
+        # for btn in follow_btns:
+        # for btn in follow_btns:
+        #     btn.click()
+        time.sleep(2)
+        # print(len(follow_btns))
+
 
 insta_bot = InstaFollower()
 insta_bot.login()
