@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 import time
 
 DRIVER_PATH = '/Users/maximus/Documents/dev_doc/chromedriver'
-SIMILAR_ACCOUNT = 'memes'
+SIMILAR_ACCOUNT = 'memeschemez'
 USERNAME = os.environ['USER']
 PASSWORD = os.environ['PASS']
 INSTA_URL = 'https://www.instagram.com/accounts/login/'
@@ -15,7 +15,7 @@ S = Service(DRIVER_PATH)
 class InstaFollower:
     def __init__(self):
         self.driver = webdriver.Chrome(service=S)
-        self.scroll = 1
+        self.scroll_count = 10
 
     def login(self):
         self.driver.get(INSTA_URL)
@@ -40,22 +40,22 @@ class InstaFollower:
         first_res = results_menu.find_elements(By.TAG_NAME, 'a')[0]
         first_res.click()
         time.sleep(2)
-        followers_tab = self.driver.find_element(By.CSS_SELECTOR, 'a[href="/memes/followers/"]')
+        followers_tab = self.driver.find_element(By.CSS_SELECTOR, f'a[href="/{SIMILAR_ACCOUNT}/followers/"]')
         followers_tab.click()
 
     def follow(self):
         time.sleep(2)
         pop_up = self.driver.find_element(By.CSS_SELECTOR, "div[role='dialog'] div.isgrP")
         print(pop_up)
-        while self.scroll == 1:
+        while self.scroll_count > 0:
             self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", pop_up)
-        # follow_btns = pop_up.find_elements(By.TAG_NAME, "li button")
-
-        # for btn in follow_btns:
-        # for btn in follow_btns:
-        #     btn.click()
-        time.sleep(2)
-        # print(len(follow_btns))
+            self.scroll_count -= 1
+            time.sleep(5)
+        followers_list = pop_up.find_elements(By.TAG_NAME, " ul li")
+        for follower in followers_list:
+            follower.find_element(By.TAG_NAME, "button").click()
+            time.sleep(1)
+        # print(len(followers_list))
 
 
 insta_bot = InstaFollower()
