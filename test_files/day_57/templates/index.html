@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Website</title>
+</head>
+<body>
+    <h1>Hello {{ name.title() }}</h1>
+    <p> I think you are {{ user_gender.gender }}</p>
+    <p> And maybe {{ user_age.age }} years old </p>
+
+    <a href=" {{ url_for('get_blog', num=3) }} ">Go to blog</a>
+
+</body>
+<footer>
+    <p>Copyright: {{ year }}. Built by {{ name }}</p>
+</footer>
+</html>
