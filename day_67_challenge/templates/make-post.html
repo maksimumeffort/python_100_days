@@ -3,7 +3,7 @@
 
 {% block content %}
 {% include "header.html" %}
-{{ ckeditor.load() }}
+
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/edit-bg.jpg')}}')">
     <div class="overlay"></div>
@@ -28,13 +28,9 @@
       <div class="col-lg-8 col-md-10 mx-auto">
 
           <form class="form form-horizontal" method="post" role="form">
-
-            {{ wtf.form_field(form.title) }}
-            {{ wtf.form_field(form.subtitle) }}
-            {{ wtf.form_field(form.author) }}
-            {{ wtf.form_field(form.img_url) }}
-            {{ wtf.form_field(form.body) }}
-            {{ wtf.form_field(form.submit) }}
+            {{ ckeditor.load() }}
+            {{ ckeditor.config(name="body") }}
+            {{ wtf.quick_form(form, button_map={"submit":"primary"}) }}
           </form>
 
       </div>
