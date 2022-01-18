@@ -62,17 +62,22 @@ def register():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    error = None
     if request.method == "POST":
         email_provided = request.form.get("email")
         password = request.form.get("password")
         print(email_provided)
         user = User.query.filter_by(email=email_provided).first()
-
-        if check_password_hash(user.password, password):
+        if not user:
+            error = "That email does not exist. Please try again"
+        elif not check_password_hash(user.password, password):
+            error = "Password incorrect please try again"
+        else:
+            flash('You were successfully logged in')
             login_user(user)
             return redirect(url_for('secrets'))
 
-    return render_template("login.html")
+    return render_template("login.html", error=error)
 
 
 @app.route('/secrets')
