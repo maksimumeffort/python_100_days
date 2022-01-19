@@ -72,8 +72,17 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('blog_posts.id'))
     parent_post = relationship("BlogPost", back_populates="comments")
 
+# db.create_all()
 
-db.create_all()
+#GRAVATAR INIT
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
 
 def admin_only(f):
     @wraps(f)
@@ -155,12 +164,25 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     form = CreateCommentForm()
-
+    comments = Comment.query.all()
+    if form.validate_on_submit():
+        new_comment = Comment(
+            text=form.body.data,
+            author_id=current_user.get_id(),
+            post_id=post_id,
+        )
+        if current_user.is_authenticated:
+            db.session.add(new_comment)
+            db.session.commit()
+            return redirect(url_for('show_post', post_id=post_id))
+        else:
+            flash("You need to be logged in for this.")
+            return redirect(url_for('login'))
     requested_post = BlogPost.query.get(post_id)
-    return render_template("post.html", post=requested_post, form=form)
+    return render_template("post.html", post=requested_post, form=form, comments=comments)
 
 
 
