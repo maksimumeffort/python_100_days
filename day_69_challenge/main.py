@@ -9,6 +9,7 @@ from forms import CreatePostForm, CreateRegisterForm, CreateLoginForm, CreateCom
 from flask_gravatar import Gravatar
 from functools import wraps
 from flask import abort
+from datetime import datetime
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -29,6 +30,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 Base = declarative_base()
+
 
 ##CONFIGURE TABLES
 
@@ -239,4 +241,4 @@ def delete_post(post_id):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
