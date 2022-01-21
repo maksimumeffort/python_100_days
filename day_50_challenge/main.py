@@ -139,18 +139,39 @@ has_potential_matches = match_cards_flat[0].find_element(By.TAG_NAME, "a").get_a
 #     dict_item = {"Name": name, "Picture": picture_link}
 #     match_list.append(dict_item)
 
+## TODO: 2. Enable to send messages to matches
+# message = ""
+# match_cards_flat[1].click()
+# # send messages to matches
+# message_form = driver.find_element(By.TAG_NAME, "form")
+# text_area = message_form.find_element(By.TAG_NAME, "textarea")
+# send_button = message_form.find_element(By.TAG_NAME, "button")
+#
+# text_area.send_keys(message)
+# send_button.click()
+
 # tab_panels[1] == "Messages"
 
-## TODO: 2. Enable to send messages to matches
-message=""
-match_cards_flat[1].click()
-# send messages to matches
-message_form = driver.find_element(By.TAG_NAME, "form")
-text_area = message_form.find_element(By.TAG_NAME, "textarea")
-send_button = message_form.find_element(By.TAG_NAME, "button")
+delay()
 
-text_area.send_keys(message)
-send_button.click()
+## TODO: 3. Check for modal
+try:
+    modal = driver.find_element(By.CSS_SELECTOR, "[role*=dialog]")
+except ElementClickInterceptedException:
+
+    ## TODO: 2. Enable to check messages
+
+    message_list_div = tab_panels[1].find_element(By.CSS_SELECTOR, "div.messageList")
+    print(message_list_div)
+    message_list = message_list_div.find_elements(By.TAG_NAME, "a")
+    print(message_list)
+    message_authors = [message.find_elements(By.TAG_NAME, "h3").text for message in message_list]
+    print(message_authors)
+
+else:
+    modal_buttons = modal.find_elements(By.TAG_NAME, "button")
+    # last button is remind me later
+    print(modal_buttons)
 
 
 
