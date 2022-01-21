@@ -128,18 +128,30 @@ match_list = []
 # check if first match == https://tinder.com/app/likes-you
 has_potential_matches = match_cards_flat[0].find_element(By.TAG_NAME, "a").get_attribute('href') == "https://tinder.com/app/likes-you"
 
-if has_potential_matches:
-    match_cards_flat.pop(0)
-
-for match in match_cards_flat:
-    name = match.find_element(By.CSS_SELECTOR, "div.Ell").text.title()
-    picture_element = match.find_element(By.CSS_SELECTOR, "div.D\(b\).Pos\(r\).Expand").get_attribute("style")
-    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-    picture_link = re.findall(regex, picture_element)[0][0]
-    dict_item = {"Name": name, "Picture": picture_link}
-    match_list.append(dict_item)
+# if has_potential_matches:
+#     match_cards_flat.pop(0)
+#
+# for match in match_cards_flat:
+#     name = match.find_element(By.CSS_SELECTOR, "div.Ell").text.title()
+#     picture_element = match.find_element(By.CSS_SELECTOR, "div.D\(b\).Pos\(r\).Expand").get_attribute("style")
+#     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+#     picture_link = re.findall(regex, picture_element)[0][0]
+#     dict_item = {"Name": name, "Picture": picture_link}
+#     match_list.append(dict_item)
 
 # tab_panels[1] == "Messages"
+
+## TODO: 2. Enable to send messages to matches
+message=""
+match_cards_flat[1].click()
+# send messages to matches
+message_form = driver.find_element(By.TAG_NAME, "form")
+text_area = message_form.find_element(By.TAG_NAME, "textarea")
+send_button = message_form.find_element(By.TAG_NAME, "button")
+
+text_area.send_keys(message)
+send_button.click()
+
 
 
 # while counter > 0:
