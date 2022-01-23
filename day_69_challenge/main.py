@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, flash
+import os
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
@@ -9,14 +10,13 @@ from forms import CreatePostForm, CreateRegisterForm, CreateLoginForm, CreateCom
 from flask_gravatar import Gravatar
 from functools import wraps
 from flask import abort
-from datetime import datetime
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ["SECRET_KEY"]
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
@@ -44,6 +44,13 @@ class User(UserMixin, db.Model):
     # Children
     posts = relationship("BlogPost", back_populates="author")
     comments = relationship("Comment", back_populates="comment_author")
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), unique=True, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    date = db.Column(db.String(250), nullable=False)
+    framework = db.Column(db.String(250), nullable=False)
 
 
 class BlogPost(db.Model):
