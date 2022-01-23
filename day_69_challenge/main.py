@@ -44,6 +44,7 @@ class User(UserMixin, db.Model):
     # Children
     posts = relationship("BlogPost", back_populates="author")
     comments = relationship("Comment", back_populates="comment_author")
+    projects = relationship("Project", back_populates="project_author")
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,6 +52,8 @@ class Project(db.Model):
     description = db.Column(db.Text, nullable=False)
     date = db.Column(db.String(250), nullable=False)
     framework = db.Column(db.String(250), nullable=False)
+    project_author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    project_author = relationship("User", back_populates="projects")
 
 
 class BlogPost(db.Model):
