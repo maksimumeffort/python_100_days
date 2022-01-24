@@ -86,15 +86,11 @@ class Comment(db.Model):
 
 # db.create_all()
 
-#GRAVATAR INIT
-gravatar = Gravatar(app,
-                    size=100,
-                    rating='g',
-                    default='retro',
-                    force_default=False,
-                    force_lower=False,
-                    use_ssl=False,
+
+# GRAVATAR INIT (profile image generator for comments)
+gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False,
                     base_url=None)
+
 
 def admin_only(f):
     @wraps(f)
@@ -105,9 +101,16 @@ def admin_only(f):
         return f(*args, **kwargs)
     return wrapped_function
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+@app.route('/projects')
+def get_all_projects():
+    projects = Project.query.all()
+    return render_template("projects.html", all_projects=projects)
 
 
 @app.route('/')
@@ -197,7 +200,6 @@ def show_post(post_id):
     return render_template("post.html", post=requested_post, form=form, comments=comments)
 
 
-
 @app.route("/new-post", methods=["GET", "POST"])
 @admin_only
 def add_new_post():
@@ -215,7 +217,6 @@ def add_new_post():
         db.session.commit()
         return redirect(url_for("get_all_posts"))
     return render_template("make-post.html", form=form, current_user=current_user)
-
 
 
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
