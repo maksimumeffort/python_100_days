@@ -29,33 +29,6 @@ user.send_keys(EMAIL)
 password.send_keys(PASS)
 submit.click()
 
-# OPTION 1: run through the list of job ads and find the first one that has easy apply
-
-# search_results_list = driver.find_element(By.CSS_SELECTOR, "ul.jobs-search-results__list")
-# search_result_items = search_results_list.find_elements(By.CSS_SELECTOR, "li.jobs-search-results__list-item")
-# for result in search_result_items:
-#     res_id = result.get_attribute("id")
-#     print(res_id)
-#     # data_job_id = driver.find_element(By.XPATH, f"//*[@id={res_id}]/div/div").get_attribute("data-job-id")
-#     # print(data_job_id)
-
-
-
-# easy_apply = driver.find_element(By.XPATH, '//*[@id="ember303"]/div/div/ul/li[3]')
-# print(easy_apply.text)
-
-
-# print(search_result_items)
-
-
-
-# print(len(search_result_items))
-
-# apply_btns = driver.find_elements(By.CSS_SELECTOR, "div.jobs-apply-button--top-card")
-# btns_text_list = []
-# for btn in apply_btns:
-#     btns_text_list.append(btn.find_element(By.CSS_SELECTOR, "span").text)
-# print(btns_text_list)
 
 ## OPTION 2: click through the list, check if text == "easy apply", if not move to next item in list
 
@@ -77,6 +50,7 @@ def find_application_mode(item):
             span_text_list.append("Applied")
     if len(span_text_list) >= 1:
         span_text_list.pop()
+
     apply_modes.append(span_text_list)
     # print(f"{span_text_list} added")
 
@@ -95,6 +69,8 @@ search_results = driver.find_elements(By.CLASS_NAME, "jobs-search-results__list-
 apply_modes = []
 for result in search_results:
     find_application_mode(result)
+
+print(apply_modes)
 
 # find index of first list item with apply_mode = "Easy Apply"
 # flatten the apply_modes list
