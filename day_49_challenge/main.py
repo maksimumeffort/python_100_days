@@ -35,12 +35,13 @@ submit.click()
 # find_application_mode function
 def find_application_mode(item):
     item.click()
+    time.sleep(4)
     item_desc = driver.find_element(By.CSS_SELECTOR, "div.jobs-unified-top-card__content--two-pane")
     # need to sleep so that "apply" element loads
-    time.sleep(3)
     # item_title = item_desc.find_element(By.TAG_NAME, "h2").text
     item_spans = item_desc.find_elements(By.TAG_NAME, 'span')
     span_text_list = []
+    print("part 1 done")
     # go through the list of spans and pick out their Apply mode
     for span in item_spans:
         if "Apply" in span.text:
@@ -50,8 +51,8 @@ def find_application_mode(item):
             span_text_list.append("Applied")
     if len(span_text_list) >= 1:
         span_text_list.pop()
-
-    apply_modes.append(span_text_list)
+    print("part 2 done")
+    return span_text_list
     # print(f"{span_text_list} added")
 
 # Check for Modal
@@ -68,7 +69,8 @@ applications_info_list = []
 search_results = driver.find_elements(By.CLASS_NAME, "jobs-search-results__list-item")
 apply_modes = []
 for result in search_results:
-    find_application_mode(result)
+    apply_modes.append(find_application_mode(result))
+    print("apply mode appended")
 
 print(apply_modes)
 
