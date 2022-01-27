@@ -41,7 +41,7 @@ def find_application_mode(item):
     # item_title = item_desc.find_element(By.TAG_NAME, "h2").text
     item_spans = item_desc.find_elements(By.TAG_NAME, 'span')
     span_text_list = []
-    print("part 1 done")
+    # print("part 1 done")
     # go through the list of spans and pick out their Apply mode
     for span in item_spans:
         if "Apply" in span.text:
@@ -51,7 +51,7 @@ def find_application_mode(item):
             span_text_list.append("Applied")
     if len(span_text_list) >= 1:
         span_text_list.pop()
-    print("part 2 done")
+    # print("part 2 done")
     return span_text_list
     # print(f"{span_text_list} added")
 
@@ -70,7 +70,7 @@ search_results = driver.find_elements(By.CLASS_NAME, "jobs-search-results__list-
 apply_modes = []
 for result in search_results:
     apply_modes.append(find_application_mode(result))
-    print("apply mode appended")
+    # print("apply mode appended")
 
 print(apply_modes)
 
@@ -79,14 +79,15 @@ print(apply_modes)
 mode_list_flat = [item for sub_list in apply_modes for item in sub_list]
 
 # # find the first value in item_list with value "Easy Apply"
-easy_apply_indices = [n for n in range(len(mode_list_flat)) if mode_list_flat[n] == "Easy Apply"]
+easy_apply_indices = [n for n in range(len(mode_list_flat)) if mode_list_flat[n] == "Apply"]
 print(easy_apply_indices)
 # print(mode_list_flat.index('Applied'))
 
 for index in easy_apply_indices[0:1]:
     search_results[index].click()
     time.sleep(5)
-    title = driver.find_element(By.XPATH, "/html/body/div[6]/div[3]/div[3]/div[2]/div/section[2]/div/div/div[1]/div/div[1]/div")
+    info_card = driver.find_element(By.XPATH, "/html/body/div[6]/div[3]/div[3]/div[2]/div/section[2]/div/div/div[1]/div/div[1]/div")
+    title = info_card.find_element(By.TAG_NAME, "h2").text
     print(title)
 
 # for index in easy_apply_indices:
