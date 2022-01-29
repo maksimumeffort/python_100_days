@@ -1,3 +1,4 @@
+# IMPORTS #
 from selenium import webdriver
 import os
 from selenium.common.exceptions import NoSuchElementException
@@ -5,43 +6,39 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 import time
 
+# SELENIUM DRIVER SETUP #
 path = "/Users/maximus/Documents/dev_doc/chromedriver"
 s = Service(path)
 driver = webdriver.Chrome(service=s)
-
 EMAIL = os.environ["EMAIL"]
 PASS = os.environ["PASS"]
 PHONE = "459840931"
-
-URL = "https://www.linkedin.com/jobs/search/?currentJobId=2866113243&geoId=104001115&keywords=python%20developer&location=Brisbane%20City%2C%20QL"
-
+URL = "https://www.linkedin.com/jobs/search/?currentJobId=2866113243&geoId=104001115&keywords=developer&location=Brisbane%20City%2C%20QL"
 driver.get(URL)
 
-# login
+
+# LOGIN #
 sign_in = driver.find_element(By.CSS_SELECTOR, "div.nav__cta-container a.nav__button-secondary")
 sign_in.click()
-
 user = driver.find_element(By.ID, "username")
 password = driver.find_element(By.ID, "password")
 submit = driver.find_element(By.CLASS_NAME, "btn__primary--large")
-
 user.send_keys(EMAIL)
 password.send_keys(PASS)
 submit.click()
 
 
-## OPTION 2: click through the list, check if text == "easy apply", if not move to next item in list
+## FUNCTION: click through the list, check if text == "easy apply", if not move to next item in list
 
 # find_application_mode function
 def find_application_mode(item):
     item.click()
+    # need to sleep so that "apply" element loads
     time.sleep(4)
     item_desc = driver.find_element(By.CSS_SELECTOR, "div.jobs-unified-top-card__content--two-pane")
-    # need to sleep so that "apply" element loads
     # item_title = item_desc.find_element(By.TAG_NAME, "h2").text
     item_spans = item_desc.find_elements(By.TAG_NAME, 'span')
     span_text_list = []
-    # print("part 1 done")
     # go through the list of spans and pick out their Apply mode
     for span in item_spans:
         if "Apply" in span.text:
@@ -51,9 +48,7 @@ def find_application_mode(item):
             span_text_list.append("Applied")
     if len(span_text_list) >= 1:
         span_text_list.pop()
-    # print("part 2 done")
     return span_text_list
-    # print(f"{span_text_list} added")
 
 # Check for Modal
 def modal_check():
@@ -79,7 +74,7 @@ print(apply_modes)
 mode_list_flat = [item for sub_list in apply_modes for item in sub_list]
 
 # # find the first value in item_list with value "Easy Apply"
-easy_apply_indices = [n for n in range(len(mode_list_flat)) if mode_list_flat[n] == "Apply"]
+easy_apply_indices = [n for n in range(len(mode_list_flat)) if mode_list_flat[n] == "Easy Apply"]
 print(easy_apply_indices)
 # print(mode_list_flat.index('Applied'))
 
